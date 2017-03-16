@@ -1,0 +1,12 @@
+
+<!--index.wxml-->
+<view class="container">
+  <view class="chart-block">
+    <view class="canvas-box" bindtap="tapCanvas">
+      <canvas canvas-id="salesData" bindtouchstart="touchCanvas" bindtouchmove="touchmoveCanvas" bindtouchend="touchendCanvas" style="width:{{canvasData.width}}px;height:100%" />
+    </view>
+    <text class="data-max">{{canvasData.max}}</text>
+    <text class="data-avg">{{canvasData.avg}}</text>
+    <text class="data-val" wx:if="{{canvasData.valShow}}" style="position:absolute;top:{{canvasData.valTop}}px;left:{{canvasData.valLeft}}px">{{canvasData.val}}</text>
+  </view>
+</view>
