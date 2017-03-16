@@ -8,12 +8,7 @@ Page({
     userStorage: {},
     today: '',
     ifDateFinished: true,
-    dataByDay: {
-      turnover: '0',
-      orderNum: '0',
-      customNum: '0',
-      prepaid: '0'
-    },
+    dataByDay: [],
     pageFormData: {},
     canvasData: {
       width: 355,
@@ -348,7 +343,7 @@ Page({
         yArr.push(0);
         zeroNum--;
       } else {
-        var yVal = data.shift().turnover;
+        var yVal = data.shift().val;
         yVal = isNaN(yVal) ? 0 : Math.round(yVal);
         yArr.push(yVal);
       }
@@ -357,18 +352,14 @@ Page({
     dayData.yArr = yArr;
     return dayData;
   },
-  
+
   refreshPageData: function () {
-    var data = requireData.data;
-    var dataByDay = {
-      dayData: data
-    }
+    var data = requireData.dataByDay;
     this.setData({
-      dataByDay: dataByDay
+      dataByDay: data
     });
     // 画图
-    var saa = data;
-    var dayData = this.getDayData(saa);
+    var dayData = this.getDayData(data);
     this.drawData(dayData);
   },
 
