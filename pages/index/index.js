@@ -4,12 +4,7 @@ var requireData = require('../data/data.js');
 
 Page({
   data: {
-    currentStore: '0',
-    userStorage: {},
-    today: '',
-    ifDateFinished: true,
     dataByDay: [],
-    pageFormData: {},
     canvasData: {
       width: 355,
       max: 1,
@@ -23,58 +18,7 @@ Page({
       heightArr: []
     }
   },
-  toLoginPage: function () {
-    wx.navigateTo({
-      url: '../login/login'
-    })
-  },
-  linkToPage: function (event) {
-    wx.navigateTo({
-      url: event.currentTarget.dataset.url
-    })
-  },
-  bindPickerChange: function (e) {
-    if (e.detail.value === this.data.currentStore) {
-      return;
-    }
-
-    var obj = app.globalData.formDataObj;
-    obj.rest_id = this.data.storesData.id[e.detail.value];
-    this.setData({
-      currentStore: e.detail.value,
-      pageFormData: obj
-    });
-    app.globalData.formDataObj = obj;
-
-    // 发送数据请求，更新页面数据
-    this.refreshPageData();
-  },
-  bindStartDateChange: function (event) {
-
-    var obj = app.globalData.formDataObj;
-    obj.time_begin = event.detail.value;
-    this.setData({
-      ifDateFinished: false,
-      pageFormData: obj
-    });
-    app.globalData.formDataObj = obj;
-  },
-  bindEndDateChange: function (event) {
-
-    var obj = app.globalData.formDataObj;
-    obj.time_end = event.detail.value;
-    this.setData({
-      ifDateFinished: true,
-      pageFormData: obj
-    });
-    app.globalData.formDataObj = obj;
-
-    // 发送数据请求更新页面数据
-    this.refreshPageData();
-  },
   tapCanvas: function (e) {
-    console.log('tapCanvas');
-    console.log(e);
     var canvasData = this.data.canvasData;
     var x = parseInt(e.touches[0].clientX);
     var val = '' + canvasData.val;
@@ -96,8 +40,6 @@ Page({
     });
   },
   touchCanvas: function (e) {
-    console.log('touchCanvas');
-    console.log(e);
     var canvasData = this.data.canvasData;
     var gridWidth = canvasData.gridWidth;
     var valArr = canvasData.valArr;
@@ -114,47 +56,13 @@ Page({
     });
   },
   touchmoveCanvas: function (e) {
-    console.log('touchmoveCanvas');
-    console.log(e);
     var canvasData = this.data.canvasData;
     canvasData.valShow = false;
     this.setData({
       canvasData: canvasData
     });
   },
-  touchendCanvas: function(e) {
-    console.log('touchendCanvas');
-    console.log(e);
-  },
-  drawAxisX: function (ctx, axisXArr, gridWidth, barWidth) {
-    var initWidth = gridWidth / 2 - 5;
-    ctx.beginPath();
-    ctx.setFontSize(10);
-    ctx.setFillStyle('#353535');
-    for (var i = 0, len = axisXArr.length; i < len; i++) {
-      ctx.fillText(axisXArr[i], initWidth + gridWidth * i, 195);
-    }
-  },
-  drawAxisY: function (ctx, axisYArr, gridWidth, barWidth) {
-    var initWidth = (gridWidth - 10) / 2;
-    ctx.setLineCap('round');
-    ctx.setLineWidth(10);
-    for (var i = 0, len = axisYArr.length; i < len; i++) {
-      var x = initWidth + gridWidth * i;
-      var y = 175 - axisYArr[i];
-      ctx.beginPath();
-      if (axisYArr[i] > 6) {
-        var grd = ctx.createLinearGradient(x, 175, x, y);
-        grd.addColorStop(0, 'rgba(235,0,0,1)');
-        grd.addColorStop(1, 'rgba(253, 112, 100, 1)');
-        ctx.setStrokeStyle(grd);
-      } else {
-        ctx.setStrokeStyle('rgba(235,0,0,0.8)');
-      }
-      ctx.moveTo(x, 175)
-      ctx.lineTo(x, y)
-      ctx.stroke()
-    }
+  touchendCanvas: function (e) {
   },
   drawAxisYRect: function (ctx, axisYArr, gridWidth, barWidth) {
     var barWidth = 10;
@@ -177,6 +85,15 @@ Page({
       }
       ctx.arc(x, y, barWidth / 2, 1 * Math.PI, 2 * Math.PI);
       ctx.fill();
+    }
+  },
+  drawAxisX: function (ctx, axisXArr, gridWidth, barWidth) {
+    var initWidth = gridWidth / 2 - 5;
+    ctx.beginPath();
+    ctx.setFontSize(10);
+    ctx.setFillStyle('#353535');
+    for (var i = 0, len = axisXArr.length; i < len; i++) {
+      ctx.fillText(axisXArr[i], initWidth + gridWidth * i, 195);
     }
   },
   caculateAxisY: function (arr) {
@@ -211,6 +128,7 @@ Page({
       arr: hArr
     }
   },
+
   drawGridLine: function (ctx, width) {
     ctx.setLineWidth(0.04);
     ctx.moveTo(0, 180);
@@ -221,61 +139,6 @@ Page({
     ctx.lineTo(width, 1);
     ctx.stroke();
   },
-  login: function () {
-    var that = this;
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          wx.request({
-            url: app.globalData.URL + app.globalData.loginUrl,
-            data: {
-              code: res.code
-            },
-            method: 'POST',
-            success: function (response) {
-              if (response.statusCode === 200) {
-                var data = response.data;
-                if (data.errorCode === 200) {
-                  var sessionId = data.data.APPID_SESSION;
-                  wx.setStorageSync('SESSIONID', sessionId);
-                  var userStorage = that.data.userStorage;
-                  userStorage.userName = data.data.username;
-                  userStorage.restsList = utils.formatRestsToArray(data.data.rests);
-                  wx.setStorageSync('MESSAGE', userStorage);
-                  // 获取用户数据
-                  that.getUserData();
-                } else if (data.errorCode === 401) {
-                  // 未绑定,跳转到绑定页面
-                  wx.navigateTo({
-                    url: '../login/login',
-                  });
-                } else {
-                  console.log(data.errorMessage);
-                }
-              } else {
-                console.log(response.errMsg);
-              }
-            },
-            fail: function (res) {
-              console.log(res);
-            }
-          });
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      },
-      fail: function (res) {
-        console.log(res);
-      }
-    });
-  },
-  onPullDownRefresh: function () {
-    // 发送数据请求更新页面数据
-    this.refreshPageData();
-    wx.stopPullDownRefresh();
-  },
-
-///////////
 
   drawData: function (data) {
     var clientWidth = utils.getWindowWidth();
@@ -286,10 +149,10 @@ Page({
     // canvas占屏幕宽度
     var ratio = 0.95;
     // test data
-    var axisXArr = ['2/1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
-    var axisYData = [4000, 1000, 1200, 11357, 3878, 3232, 2343, 2323, 23033, 2323, 32212, 333, 567, 20230];
-    // var axisXArr = data.xArr;
-    // var axisYData = data.yArr;
+    // var axisXArr = ['2/1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
+    // var axisYData = [4000, 1000, 1200, 11357, 3878, 3232, 2343, 2323, 23033, 2323, 32212, 333, 567, 20230];
+    var axisXArr = data.xArr;
+    var axisYData = data.yArr;
     var axisXArrLen = axisXArr.length;
     gridWidth = parseInt((clientWidth * 0.95) / axisXArrLen);
     gridWidth = gridWidth < 30 ? 30 : gridWidth;
