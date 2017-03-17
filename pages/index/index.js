@@ -20,6 +20,8 @@ Page({
     chartData:{
       width: 600,
       gridWidth:50,
+      leftBar0:0,
+      leftBar1:8,
       yArr:[
         {
           val:120,
@@ -310,16 +312,22 @@ Page({
     var clientWidth = utils.getWindowWidth();
     // 计算每一格的宽度
     var gridWidth = 50;
+    // bar宽度
+    var barWidth = 8;
     var axisXArr = data.xArr;
     var axisYData = data.yArr;
     var axisXArrLen = axisXArr.length;
     gridWidth = parseInt(clientWidth / axisXArrLen);
-    gridWidth = gridWidth < 30 ? 30 : gridWidth;
+    gridWidth = gridWidth < 40 ? 40 : gridWidth;
+    var leftBar0 = parseInt(gridWidth / 2) - barWidth;
+    var leftBar1 = parseInt(gridWidth / 2);
     var chartData = this.data.chartData;
     var width = gridWidth * axisXArrLen;
     width = width < clientWidth ? clientWidth.toFixed(3) : width;
     chartData.width = width;
     chartData.gridWidth = gridWidth;
+    chartData.leftBar0 = leftBar0;
+    chartData.leftBar1 = leftBar1;
     var axisYObj = this.caculateVal(axisYData);
     var axisYArr = axisYObj.arr;
     //  添加数据描述

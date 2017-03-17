@@ -16,8 +16,8 @@
         <view class="bar-chart">
           <block wx:for="{{chartData.heightArr}}" wx:key="idx" wx:for-item="item">
             <view class="bar-unit" style="width:{{chartData.gridWidth}}px">
-              <view class="bar-val" style="height:{{item.val}}px"></view>
-              <view class="bar-real-val" style="height:{{item.realVal}}px"></view>
+              <view class="bar-val" style="height:{{item.val}}px;left:{{chartData.leftBar0}}px"></view>
+              <view class="bar-real-val" style="height:{{item.realVal}}px;left:{{chartData.leftBar1}}px"></view>
             </view>
           </block>
         </view>

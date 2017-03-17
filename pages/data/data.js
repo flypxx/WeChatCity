@@ -138,11 +138,6 @@ var dataByDay = [
 
 var dataByDayCopy = [
     {
-        "val": 1230,
-        "realVal": 1000,
-        "day": "2017-02-15"
-    },
-    {
         "val": 261426.1,
         "realVal": 260000,
         "day": "2017-02-16"
