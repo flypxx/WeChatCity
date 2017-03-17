@@ -267,10 +267,70 @@ Page({
     this.drawData(dayData);
   },
 
+  caculateVal: function(data) {
+    var arrMess = {};
+    var valArr = [];
+    var realValArr = [];
+    var len = data.length
+    var num = 0;
+    var sum = 0;
+    var hArr = [];
+    for (var i = 0; i <len;i++) {
+      var val = data[i].val;
+      if (val !== 0) {
+        num++;
+      }
+      sum += val;
+      valArr.push(val);
+      realValArr.push(data[i].realVal);
+    }
+    // max 需要重新计算
+    var max = parseInt(Math.max.apply(null, valArr));
+    var avg = num === 0 ? 0 : parseInt(sum / num);
+    // 每一格的高度
+    var gridHeight = 90;
+    var maxLength = ('' + max).length - 1;
+    max = parseInt(max / Math.pow(10, maxLength) + 1) * Math.pow(10, maxLength);
+    var avgLength = ('' + avg).length - 2;
+    avg = avgLength < 0 ? max / 2 : (parseInt(avg / Math.pow(10, avgLength) + 1) * Math.pow(10, avgLength));
+    var minus = max - avg;
+    for (var i = 0; i < len; i++) {
+      var hObj = {};
+      hObj.val = valArr[i] <= avg?parseInt(gridHeight * valArr[i] / avg):parseInt(gridHeight + gridHeight * ((valArr[i] - avg) / minus));
+      hObj.realVal = realValArr[i]<=avg?parseInt(gridHeight * realValArr[i] / avg):parseInt(gridHeight + gridHeight * ((realValArr[i] - avg) / minus));
+      hArr.push(hObj);
+    }
+    return {
+      max: max,
+      avg: avg,
+      arr: hArr
+    }
+  },
   drawChartData: function(data) {
     var clientWidth = utils.getWindowWidth();
     // 计算每一格的宽度
     var gridWidth = 50;
+    var axisXArr = data.xArr;
+    var axisYData = data.yArr;
+    var axisXArrLen = axisXArr.length;
+    gridWidth = parseInt(clientWidth / axisXArrLen);
+    gridWidth = gridWidth < 30 ? 30 : gridWidth;
+    var chartData = this.data.chartData;
+    var width = gridWidth * axisXArrLen;
+    width = width < clientWidth ? clientWidth.toFixed(3) : width;
+    chartData.width = width;
+    chartData.gridWidth = gridWidth;
+    var axisYObj = this.caculateVal(axisYData);
+    var axisYArr = axisYObj.arr;
+    //  添加数据描述
+    chartData.max = axisYObj.max;
+    chartData.avg = axisYObj.avg;
+    chartData.valArr = axisYData;
+    chartData.heightArr = axisYArr;
+    chartData.xArr = axisXArr;
+    this.setData({
+      chartData: chartData
+    });
   },
   caculateDayData:function(data) {
     var dayData = {
@@ -298,8 +358,9 @@ Page({
         zeroNum--;
       } else {
         var yObj = {};
-        var yVal = data.shift().val;
-        var yReal = data.shift().realVal;
+        var valObj = data.shift();
+        var yVal = valObj.val;
+        var yReal = valObj.realVal;
         yVal = isNaN(yVal) ? 0 : Math.round(yVal);
         yReal = isNaN(yReal) ? 0 : Math.round(yReal);
         yObj.val = yVal;
@@ -312,13 +373,9 @@ Page({
     return dayData;
   },
   drawPageData: function() {
-    var data = requireData.dataByDay;
+    var data = requireData.dataByDayCopy;
     var dayData = this.caculateDayData(data);
     this.drawChartData(dayData);
-    var axisXArr = data.xArr;
-    var axisYData = data.yArr;
-    var axisXArrLen = axisXArr.length;
-    gridWidth = parseInt(clientWidth / axisXArrLen);
   },
   onLoad: function () {
     this.refreshPageData();

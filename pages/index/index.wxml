@@ -14,7 +14,7 @@
     <scroll-view class="chart-scroll" scroll-x="true">
       <view class="chart-data" style="width:{{chartData.width}}px">
         <view class="bar-chart">
-          <block wx:for="{{chartData.yArr}}" wx:key="idx" wx:for-item="item">
+          <block wx:for="{{chartData.heightArr}}" wx:key="idx" wx:for-item="item">
             <view class="bar-unit" style="width:{{chartData.gridWidth}}px">
               <view class="bar-val" style="height:{{item.val}}px"></view>
               <view class="bar-real-val" style="height:{{item.realVal}}px"></view>
