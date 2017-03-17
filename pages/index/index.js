@@ -226,7 +226,6 @@ Page({
     });
     ctx.draw();
   },
-
   getDayData: function (data) {
     var dayData = {
       xArr: [],
@@ -258,7 +257,6 @@ Page({
     dayData.yArr = yArr;
     return dayData;
   },
-
   refreshPageData: function () {
     var data = requireData.dataByDay;
     this.setData({
@@ -269,7 +267,62 @@ Page({
     this.drawData(dayData);
   },
 
+  drawChartData: function(data) {
+    var clientWidth = utils.getWindowWidth();
+    // 计算每一格的宽度
+    var gridWidth = 50;
+  },
+  caculateDayData:function(data) {
+    var dayData = {
+      xArr: [],
+      yArr: []
+    };
+    var len = data.length;
+    var arrLen = len < 7 ? 7 : len;
+    var xArr = [];
+    var yArr = [];
+    var date = data[len - 1].day;
+    for (var i = arrLen - 1; i >= 0; i--) {
+      var time = new Date(date).getTime() - i * 1000 * 60 * 60 * 24;
+      var day = utils.formatDate(time, 'simple');
+      xArr.push(day);
+    }
+    var zeroNum = arrLen - len;
+    zeroNum = zeroNum < 0 ? 0 : zeroNum;
+    for (var i = 0; i < arrLen; i++) {
+      if (zeroNum > 0) {
+        yArr.push({
+          val: 0,
+          realVal: 0
+        });
+        zeroNum--;
+      } else {
+        var yObj = {};
+        var yVal = data.shift().val;
+        var yReal = data.shift().realVal;
+        yVal = isNaN(yVal) ? 0 : Math.round(yVal);
+        yReal = isNaN(yReal) ? 0 : Math.round(yReal);
+        yObj.val = yVal;
+        yObj.realVal = yReal;
+        yArr.push(yObj);
+      }
+    }
+    dayData.xArr = xArr;
+    dayData.yArr = yArr;
+    return dayData;
+  },
+  drawPageData: function() {
+    var data = requireData.dataByDay;
+    var dayData = this.caculateDayData(data);
+    this.drawChartData(dayData);
+    var axisXArr = data.xArr;
+    var axisYData = data.yArr;
+    var axisXArrLen = axisXArr.length;
+    gridWidth = parseInt(clientWidth / axisXArrLen);
+  },
   onLoad: function () {
     this.refreshPageData();
+    // 绘制scroll-view
+    this.drawPageData();
   }
 });
