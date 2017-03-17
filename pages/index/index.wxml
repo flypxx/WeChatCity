@@ -7,4 +7,26 @@
     <text class="data-avg">{{canvasData.avg}}</text>
     <text class="data-val" wx:if="{{canvasData.valShow}}" style="position:absolute;top:{{canvasData.valTop}}px;left:{{canvasData.valLeft}}px">{{canvasData.val}}</text>
   </view>
+
+  <view class="view-chart">
+    <view class="background-top"></view>
+    <view class="background-bottom"></view>
+    <scroll-view class="chart-scroll" scroll-x="true">
+      <view class="chart-data" style="width:{{chartData.width}}px">
+        <view class="bar-chart">
+          <block wx:for="{{chartData.yArr}}" wx:key="idx" wx:for-item="item">
+            <view class="bar-unit" style="width:{{chartData.gridWidth}}px">
+              <view class="bar-val" style="height:{{item.val}}px"></view>
+              <view class="bar-real-val" style="height:{{item.realVal}}px"></view>
+            </view>
+          </block>
+        </view>
+        <view class="x-axis">
+          <block wx:for="{{chartData.xArr}}" wx:key="idx" wx:for-item="item">
+            <view class="x-axis-unit" style="width:{{chartData.gridWidth}}px">{{item}}</view>
+          </block>
+        </view>
+      </view>
+    </scroll-view> 
+  </view>
 </view>

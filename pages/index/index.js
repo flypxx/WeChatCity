@@ -16,6 +16,49 @@ Page({
       valLeft: 0,
       valArr: [],
       heightArr: []
+    },
+    chartData:{
+      width: 600,
+      gridWidth:50,
+      yArr:[
+        {
+          val:120,
+          realVal:100,
+        },
+        {
+          val:100,
+          realVal:80,
+        },
+        {
+          val:150,
+          realVal:140,
+        },
+        {
+          val:160,
+          realVal:130,
+        },
+        {
+          val:90,
+          realVal:70,
+        },
+        {
+          val:80,
+          realVal:30,
+        },
+        {
+          val:70,
+          realVal:50,
+        },
+        {
+          val:40,
+          realVal:10,
+        },
+        {
+          val:60,
+          realVal:20,
+        },
+      ],
+      xArr:[23,24,25,26,27,28,29,30,31]
     }
   },
   tapCanvas: function (e) {
