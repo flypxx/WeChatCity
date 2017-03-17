@@ -1,5 +1,3 @@
-
-<!--index.wxml-->
 <view class="container">
   <view class="chart-block">
     <view class="canvas-box" bindtap="tapCanvas">
