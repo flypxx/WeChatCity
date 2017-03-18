@@ -78,7 +78,8 @@
   top: 0;
   left: 0;
   height: 200px;
-  width: 100%;
+  width: 95%;
+  margin: 0 2.5%;
   z-index: 12;
 }
 
@@ -104,8 +105,7 @@
 
 .bar-val {
   position: absolute;
-  bottom: 0;
-  left: 20px;
+  bottom: 1rpx;
   width: 8px;
   height: 120px;
   background: rgba(235, 0, 0, 1);
@@ -115,8 +115,7 @@
 
 .bar-real-val {
   position: absolute;
-  bottom: 0;
-  left: 28px;
+  bottom: 1rpx;
   width: 8px;
   height: 100px;
   background: rgba(253, 112, 100, 1);
@@ -131,4 +130,6 @@
   display: flex;
   height: 20px;
   text-align: center;
+  font-size: 9pt;
+  color: #353535;
 }
