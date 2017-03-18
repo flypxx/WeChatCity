@@ -11,7 +11,7 @@
   <view class="view-chart">
     <view class="background-top"></view>
     <view class="background-bottom"></view>
-    <scroll-view class="chart-scroll" scroll-x="true">
+    <scroll-view class="chart-scroll" scroll-x="true" bindtap="tapScrollView" scroll-left="{{chartData.scrollLeft}}">
       <view class="chart-data" style="width:{{chartData.width}}px">
         <view class="bar-chart">
           <block wx:for="{{chartData.heightArr}}" wx:key="idx" wx:for-item="item">

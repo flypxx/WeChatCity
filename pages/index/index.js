@@ -18,6 +18,7 @@ Page({
       heightArr: []
     },
     chartData:{
+      scrollLeft:0,
       width: 600,
       gridWidth:50,
       leftBar0:0,
@@ -270,6 +271,10 @@ Page({
   },
 
   //chart-view
+  tapScrollView: function(e) {
+    console.log(e);
+    console.log('asas');
+  },
   tapChart:function(e) {
     console.log(e);
     console.log('asas');
