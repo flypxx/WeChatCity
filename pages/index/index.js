@@ -17,51 +17,52 @@ Page({
       valArr: [],
       heightArr: []
     },
-    chartData:{
-      scrollLeft:0,
+    scrollLeft: 0,
+    chartData: {
+      showTips:false,
       width: 600,
-      gridWidth:50,
-      leftBar0:0,
-      leftBar1:8,
-      yArr:[
+      gridWidth: 50,
+      leftBar0: 0,
+      leftBar1: 8,
+      yArr: [
         {
-          val:120,
-          realVal:100,
+          val: 120,
+          realVal: 100,
         },
         {
-          val:100,
-          realVal:80,
+          val: 100,
+          realVal: 80,
         },
         {
-          val:150,
-          realVal:140,
+          val: 150,
+          realVal: 140,
         },
         {
-          val:160,
-          realVal:130,
+          val: 160,
+          realVal: 130,
         },
         {
-          val:90,
-          realVal:70,
+          val: 90,
+          realVal: 70,
         },
         {
-          val:80,
-          realVal:30,
+          val: 80,
+          realVal: 30,
         },
         {
-          val:70,
-          realVal:50,
+          val: 70,
+          realVal: 50,
         },
         {
-          val:40,
-          realVal:10,
+          val: 40,
+          realVal: 10,
         },
         {
-          val:60,
-          realVal:20,
+          val: 60,
+          realVal: 20,
         },
       ],
-      xArr:[23,24,25,26,27,28,29,30,31]
+      xArr: [23, 24, 25, 26, 27, 28, 29, 30, 31]
     }
   },
   tapCanvas: function (e) {
@@ -271,15 +272,35 @@ Page({
   },
 
   //chart-view
-  tapScrollView: function(e) {
-    console.log(e);
-    console.log('asas');
+  scrollChart: function (e) {
+    this.setData({
+      scrollLeft: e.detail.scrollLeft
+    });
   },
-  tapChart:function(e) {
+  tapChart: function (e) {
     console.log(e);
-    console.log('asas');
+    // marginLeft 占屏幕宽度比
+    var xVal = e.touches[0].clientX;
+    var marginLeftPersent = 0.025;
+    var chartHeight = 180;
+    var chartData = this.data.chartData;
+    var marginLeft = Math.round(utils.getWindowWidth() * marginLeftPersent);
+    var gridWidth = chartData.gridWidth;
+    var scrollLeft = this.data.scrollLeft;
+    var targetUnitNum = parseInt((xVal - marginLeft + scrollLeft) / gridWidth);
+    var tipsXAxis = targetUnitNum * gridWidth + gridWidth / 2 - scrollLeft;
+    var tipsYAxis = chartHeight - chartData.heightArr[targetUnitNum].val;
+    var valObj = chartData.valArr[targetUnitNum];
+
+    chartData.tipsObj = valObj;
+    chartData.showTips = true;
+    chartData.tipsLeft = tipsXAxis;
+    chartData.tipsTop = tipsYAxis;
+    this.setData({
+      chartData: chartData
+    });
   },
-  caculateVal: function(data) {
+  caculateVal: function (data) {
     var arrMess = {};
     var valArr = [];
     var realValArr = [];
@@ -287,7 +308,7 @@ Page({
     var num = 0;
     var sum = 0;
     var hArr = [];
-    for (var i = 0; i <len;i++) {
+    for (var i = 0; i < len; i++) {
       var val = data[i].val;
       if (val !== 0) {
         num++;
@@ -308,8 +329,8 @@ Page({
     var minus = max - avg;
     for (var i = 0; i < len; i++) {
       var hObj = {};
-      hObj.val = valArr[i] <= avg?parseInt(gridHeight * valArr[i] / avg):parseInt(gridHeight + gridHeight * ((valArr[i] - avg) / minus));
-      hObj.realVal = realValArr[i]<=avg?parseInt(gridHeight * realValArr[i] / avg):parseInt(gridHeight + gridHeight * ((realValArr[i] - avg) / minus));
+      hObj.val = valArr[i] <= avg ? parseInt(gridHeight * valArr[i] / avg) : parseInt(gridHeight + gridHeight * ((valArr[i] - avg) / minus));
+      hObj.realVal = realValArr[i] <= avg ? parseInt(gridHeight * realValArr[i] / avg) : parseInt(gridHeight + gridHeight * ((realValArr[i] - avg) / minus));
       hArr.push(hObj);
     }
     return {
@@ -318,7 +339,7 @@ Page({
       arr: hArr
     }
   },
-  drawChartData: function(data) {
+  drawChartData: function (data) {
     var clientWidth = utils.getWindowWidth();
     // 计算每一格的宽度
     var gridWidth = 50;
@@ -350,7 +371,7 @@ Page({
       chartData: chartData
     });
   },
-  caculateDayData:function(data) {
+  caculateDayData: function (data) {
     var dayData = {
       xArr: [],
       yArr: []
@@ -390,7 +411,7 @@ Page({
     dayData.yArr = yArr;
     return dayData;
   },
-  drawPageData: function() {
+  drawPageData: function () {
     var data = requireData.dataByDayCopy;
     var dayData = this.caculateDayData(data);
     this.drawChartData(dayData);
