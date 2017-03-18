@@ -134,3 +134,9 @@
   font-size: 7pt;
   color: #353535;
 }
+
+.tips-detail {
+  display: flex;
+  font-size: 9pt;
+  z-index: 13;
+}

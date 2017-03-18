@@ -29,8 +29,8 @@
       </view>
     </scroll-view>
     <view class="tips-detail" wx:if="{{chartData.showTips}}" style="position:absolute;top:{{chartData.tipsTop}}px;left:{{chartData.tipsLeft}}px;">
-      <text>{{chartData.tipsObj.val}} </text>
-      <text>{{chartData.tipsObj.realVal}}</text>
+      <view class="tips-val">{{chartData.tipsObj.val}}</view>
+      <view class="tips-real-val">{{chartData.tipsObj.realVal}}</view>
     </view>
   </view>
 </view>
