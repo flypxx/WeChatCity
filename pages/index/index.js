@@ -269,6 +269,11 @@ Page({
     this.drawData(dayData);
   },
 
+  //chart-view
+  tapChart:function(e) {
+    console.log(e);
+    console.log('asas');
+  },
   caculateVal: function(data) {
     var arrMess = {};
     var valArr = [];
