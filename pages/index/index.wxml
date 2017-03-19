@@ -28,9 +28,17 @@
         </view>
       </view>
     </scroll-view>
-    <view class="tips-detail" wx:if="{{chartData.showTips}}" style="position:absolute;top:{{chartData.tipsTop}}px;left:{{chartData.tipsLeft}}px;">
-      <view class="tips-val">{{chartData.tipsObj.val}}</view>
-      <view class="tips-real-val">{{chartData.tipsObj.realVal}}</view>
+    <view class="tips-detail" wx:if="{{showTips}}" style="position:absolute;top:{{chartData.tipsTop}}px;left:{{chartData.tipsLeft}}px;">
+      <view class="tips-val">
+        <view class="legend"></view>
+        {{chartData.tipsObj.val}}
+      </view>
+      <view class="tips-real-val">
+        <view class="legend"></view>
+        {{chartData.tipsObj.realVal}}
+      </view>
     </view>
+    <text class="tips-max">{{chartData.max}}</text>
+    <text class="tips-avg">{{chartData.avg}}</text>
   </view>
 </view>
