@@ -50,6 +50,7 @@
   position: relative;
   height: 200px;
   width: 100%;
+  top: 40px;
 }
 
 .background-top {
@@ -108,7 +109,7 @@
   bottom: 1rpx;
   width: 8px;
   height: 120px;
-  background: rgba(235, 0, 0, 1);
+  background-image: linear-gradient(0deg, rgba(235, 0, 0, 1), rgba(253, 112, 100, 1));
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
 }
@@ -118,7 +119,7 @@
   bottom: 1rpx;
   width: 8px;
   height: 100px;
-  background: rgba(253, 112, 100, 1);
+  background: linear-gradient(0deg, #e04e86, #de86ef);
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
 }
@@ -136,7 +137,56 @@
 }
 
 .tips-detail {
-  display: flex;
   font-size: 9pt;
+  padding: 2px 6px 2px 3px;
+  border: 1rpx solid rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  background-color: #fff;
+  z-index: 14;
+}
+
+.tips-val {
+  display: flex;
+  color: rgba(235, 0, 0, 1);
+}
+
+.tips-val .legend {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(235, 0, 0, 1);
+  margin: 3px;
+}
+
+.tips-real-val {
+  display: flex;
+  color: #de86ef;
+}
+
+.tips-real-val .legend {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #de86ef;
+  margin: 3px;
+}
+
+.tips-max {
+  font-size: 7pt;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  color: #353535;
+  z-index: 13;
+}
+
+.tips-avg {
+  font-size: 7pt;
+  position: absolute;
+  top: 92px;
+  right: 8px;
+  color: #353535;
   z-index: 13;
 }
