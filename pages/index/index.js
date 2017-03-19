@@ -18,8 +18,8 @@ Page({
       heightArr: []
     },
     scrollLeft: 0,
+    showTips: false,
     chartData: {
-      showTips:false,
       width: 600,
       gridWidth: 50,
       leftBar0: 0,
@@ -274,7 +274,8 @@ Page({
   //chart-view
   scrollChart: function (e) {
     this.setData({
-      scrollLeft: e.detail.scrollLeft
+      scrollLeft: e.detail.scrollLeft,
+      showTips: false
     });
   },
   tapChart: function (e) {
@@ -283,21 +284,24 @@ Page({
     var xVal = e.touches[0].clientX;
     var marginLeftPersent = 0.025;
     var chartHeight = 180;
+    var tipsHeight = 38;
     var chartData = this.data.chartData;
     var marginLeft = Math.round(utils.getWindowWidth() * marginLeftPersent);
     var gridWidth = chartData.gridWidth;
     var scrollLeft = this.data.scrollLeft;
     var targetUnitNum = parseInt((xVal - marginLeft + scrollLeft) / gridWidth);
     var tipsXAxis = targetUnitNum * gridWidth + gridWidth / 2 - scrollLeft;
-    var tipsYAxis = chartHeight - chartData.heightArr[targetUnitNum].val;
+    var tipsYAxis = chartHeight - chartData.heightArr[targetUnitNum].val - tipsHeight;
     var valObj = chartData.valArr[targetUnitNum];
+    var val = '' + valObj.val;
+    var offsetVal = (val.length * 3 + 23) / 2;
 
     chartData.tipsObj = valObj;
-    chartData.showTips = true;
-    chartData.tipsLeft = tipsXAxis;
+    chartData.tipsLeft = tipsXAxis - offsetVal;
     chartData.tipsTop = tipsYAxis;
     this.setData({
-      chartData: chartData
+      chartData: chartData,
+      showTips: true
     });
   },
   caculateVal: function (data) {
